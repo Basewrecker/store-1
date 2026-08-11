@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button";
-
-const Homepage = () => {
+const Homepage = async () => {
   return <>Prostore</>;
 };
 
