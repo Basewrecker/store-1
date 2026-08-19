@@ -1,7 +1,8 @@
 import ProductCard from "./product-card"
-import { Product } from "@/lib/generated/prisma/client";
+import { getLatestProducts } from "@/lib/actions/product.actions";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Product = Awaited<ReturnType<typeof getLatestProducts>>[number];
+
 const ProductList = ({ data, title, limit }: {
   data: Product[];
   title?: string;
@@ -15,9 +16,8 @@ const ProductList = ({ data, title, limit }: {
       </h2>
       {data.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-           {/*eslint-disable-next-line @typescript-eslint/no-explicit-any*/}
-          {limitedData.map((product: Product) => (
-            <ProductCard key={product.slug} product={ product} />
+          {limitedData.map((product) => (
+            <ProductCard key={product.slug} product={product} />
           ))}
         </div>
       ) : (
@@ -28,5 +28,4 @@ const ProductList = ({ data, title, limit }: {
     </div>
   )
 }
-
 export default ProductList;
