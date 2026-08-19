@@ -1,5 +1,5 @@
 import ProductCard from "./product-card"
-import { Product } from "@/types";
+import { Product } from "@/lib/generated/prisma/client";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ProductList = ({ data, title, limit }: {
