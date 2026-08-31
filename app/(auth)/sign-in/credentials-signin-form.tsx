@@ -19,7 +19,7 @@ const CredentialsSignInForm = () => {
     const { pending } = useFormStatus();
 
     return (
-      <Button disabled={pending} className="w-full" variant="default">
+      <Button type="submit" disabled={pending} className="w-full" variant="default">
         {pending ? 'Signing In...' : 'Sign In'}
       </Button>
     )
@@ -40,7 +40,6 @@ const CredentialsSignInForm = () => {
           <SignInButton />
         </div>
 
-        {console.log(data)}
         {data && !data.success && (
           <div className="text-center text-destructive">
             {data.message}
