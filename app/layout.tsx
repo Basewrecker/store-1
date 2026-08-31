@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/lib/constants";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toast";
-import { ToastProvider } from "@/components/ui/toast";
 
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -28,10 +27,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider attribute='class' defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <ToastProvider>
+          <Toaster>
             {children}
-            <Toaster />
-          </ToastProvider>
+          </Toaster>
         </ThemeProvider>
       </body>
     </html>
