@@ -40,6 +40,7 @@ const CredentialsSignInForm = () => {
           <SignInButton />
         </div>
 
+        {console.log(data)}
         {data && !data.success && (
           <div className="text-center text-destructive">
             {data.message}
