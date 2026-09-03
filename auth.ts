@@ -3,17 +3,15 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from './db/prisma';
 import Credentials from 'next-auth/providers/credentials';
 import { compareSync } from 'bcrypt-ts-edge';
+import authConfig from './auth.config';
+import { cookies } from "next/headers";
+import { NextResponse } from 'next/server';
 
 
+// Full config: pulls in Prisma (Node.js only). Only import this from Node.js
+// contexts (server actions, route handlers) — never from middleware.ts.
 export const config = {
-  pages: {
-    signIn: '/sign-in',
-    error: '/sign-in',
-  },
-  session: {
-    strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-  },
+  ...authConfig,
   adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
@@ -48,6 +46,7 @@ export const config = {
     }),
   ],
   callbacks: {
+    ...authConfig.callbacks,
     async session({ session, user, trigger, token }: any) {
       session.user.id = token.sub;
 
@@ -72,6 +71,20 @@ export const config = {
         }
       }
       return token;
+    },
+    authorized({ request, auth }: any) {
+      if (!request.cookies.get('sessionCartId')) {
+        const sessionCardId = crypto.randomUUID();
+        const newRequestHeaders = new Headers(request.headers);
+        const response = NextResponse.next({
+          request: {
+            headers: newRequestHeaders
+          }
+        })
+        response.cookies.set('sessionCartId', sessionCardId);
+      } else {
+        return true;
+      }
     }
   },
 } satisfies NextAuthConfig;
