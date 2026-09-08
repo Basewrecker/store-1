@@ -152,6 +152,7 @@ export async function removeItemFromCart(productId: string) {
     });
 
     //removing the item from cart
+
     revalidatePath(`/product/${product.slug}`);
     return {
       success: true,

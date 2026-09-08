@@ -33,16 +33,15 @@ const AddToCart = ({ cart,item }: { cart?: Cart , item: CartItem; }) => {
   };
 
   // checking if an item already exists in the cart
-  const handleRemoveFromCart = () => {
+  const handleRemoveFromCart = async () => {
     const res = await removeItemFromCart(item.productId);
 
-    toast({
-      variant: res.success ? 'default' : 'destrutive',
+    add({
+      title: res.success ? 'Removed from cart' : 'Error',
       description: res.message,
+      type: res.success ? 'success' : 'error',
     });
-
-    return
-  }
+  };
 
   const existitem = cart && cart.items.find((x) => x.productId === item.productId);
 
@@ -59,7 +58,7 @@ const AddToCart = ({ cart,item }: { cart?: Cart , item: CartItem; }) => {
     </div>
     ): (
         <Button className="w-full" type="button" onClick={handleAddToCart}>
-        <Plus />Add to cart
+        {isPending ? (<Loader className="w-4 h-4 animate-spin"/>): (<Plus className="w-4 h-4"/>) }Add to cart
         </Button>
     )
   );
