@@ -4,8 +4,9 @@ import { getProductBySlug } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
 import ProductPrice from "@/components/shared/product/product-price";
 import ProductImages from "@/components/shared/product/product-images";
-import { Divide } from "lucide-react";
 import AddToCart from "@/components/shared/product/add-to-cart";
+import { getMyCart } from "@/lib/actions/cart.actions";
+
 
 const ProductDetailsPage = async (props: {
   params: Promise<{slug: string}>
@@ -14,6 +15,9 @@ const ProductDetailsPage = async (props: {
 
   const product = await getProductBySlug(slug);
   if (!product) notFound();
+
+  const cart = await getMyCart();
+
   return (
     <section>
       <div className="grid grid-cols-1 md:grid-cols-5">
@@ -65,7 +69,9 @@ const ProductDetailsPage = async (props: {
               </div>
               {product.stock > 0 && (
                 <div className="flex-center">
-                  <AddToCart item={{
+                  <AddToCart
+                    cart = {cart}
+                    item={{
                     productId: product.id,
                     name: product.name,
                     slug: product.slug,
